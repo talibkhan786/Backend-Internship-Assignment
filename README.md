@@ -28,8 +28,6 @@ A Django-based credit approval system that processes loan applications based on 
 - Redis
 - Docker
 
-   ```
-
 ### Docker Setup
 
 1. **Build and run with Docker Compose**
