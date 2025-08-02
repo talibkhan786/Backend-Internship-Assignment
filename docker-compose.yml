@@ -1,0 +1,51 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: credit_system_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:6-alpine
+    ports:
+      - "6379:6379"
+
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    working_dir: /code
+    volumes:
+      - ./credit_system:/code
+      - ./customer_data.xlsx:/code/customer_data.xlsx
+      - ./loan_data.xlsx:/code/loan_data.xlsx
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/credit_system_db
+      - REDIS_URL=redis://redis:6379/0
+
+  celery:
+    build: .
+    command: celery -A credit_system.celery worker -l info
+    working_dir: /code
+    volumes:
+      - ./credit_system:/code
+      - ./customer_data.xlsx:/code/customer_data.xlsx
+      - ./loan_data.xlsx:/code/loan_data.xlsx
+    depends_on:
+      - db
+      - redis
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/credit_system_db
+      - REDIS_URL=redis://redis:6379/0
+
+volumes:
+  postgres_data:
