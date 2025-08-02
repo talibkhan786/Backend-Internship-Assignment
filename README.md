@@ -26,57 +26,8 @@ A Django-based credit approval system that processes loan applications based on 
 - Python 3.8+
 - PostgreSQL
 - Redis
-- Docker (optional)
+- Docker
 
-### Local Development Setup
-
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd Backend-Internship-Assignment
-   ```
-
-2. **Create virtual environment**
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
-
-3. **Install dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Setup PostgreSQL database**
-   - Create a database named `credit_system_db`
-   - Update database credentials in `credit_system/credit_system/settings.py` if needed
-
-5. **Run migrations**
-   ```bash
-   cd credit_system
-   python manage.py makemigrations
-   python manage.py migrate
-   ```
-
-6. **Start Redis server**
-   ```bash
-   redis-server
-   ```
-
-7. **Start Celery worker** (in a new terminal)
-   ```bash
-   cd credit_system
-   celery -A credit_system worker -l info
-   ```
-
-8. **Import initial data**
-   ```bash
-   python manage.py import_data
-   ```
-
-9. **Run the development server**
-   ```bash
-   python manage.py runserver
    ```
 
 ### Docker Setup
@@ -88,7 +39,6 @@ A Django-based credit approval system that processes loan applications based on 
 
 2. **Run migrations**
    ```bash
-   docker-compose exec web python manage.py makemigrations
    docker-compose exec web python manage.py migrate
    ```
 
